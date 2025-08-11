@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "Tree Page";
+}
+
+<style>
+    body {
+        background-color: #f5f9f5;
+        font-family: Arial, sans-serif;
+    }
+
+    .text-center {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    h1.display-4 {
+        color: #2e7d32;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #555;
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+    }
+
+    /* Links above table */
+    .action-links {
+        margin-bottom: 20px;
+    }
+
+        .action-links a {
+            display: inline-block;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 10px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+            .action-links a:hover {
+                background-color: #45a049;
+                transform: scale(1.02);
+            }
+
+    /* Table styles */
+    .table {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .table th {
+            background-color: #388e3c;
+            color: white;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .table td {
+            text-align: center;
+            padding: 12px;
+            border-top: 1px solid #ddd;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f8f1;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Learn more link */
+        .table a {
+            color: #2e7d32;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+            .table a:hover {
+                text-decoration: underline;
+                color: #1b5e20;
+            }
+</style>
+
+<div class="text-center">
+    <h1 class="display-4">World of Trees</h1>
+    <p>Tree List</p>
+
+    <div class="action-links">
+        <a asp-controller="Tree" asp-action="Form">Add New Tree</a>
+        <a asp-controller="Tree" asp-action="GetJsonData">JSON Data</a>
+        <a asp-controller="Tree" asp-action="FileDownload">Download File</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Links</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@Html.ActionLink("learn more...", "Details", "Tree", new { name = item.Name }, null)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
