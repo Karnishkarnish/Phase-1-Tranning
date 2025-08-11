@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Customer Menu - Yummy Tummy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: url('https://t3.ftcdn.net/jpg/10/40/41/20/240_F_1040412050_g4CvlQYasDkTyaAA4yuj2r8Sgpnjt3fN.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: #fff;
+    }
+    .menu-card {
+      background-color: rgba(255, 255, 255, 0.95);
+      color: #000;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .cart-summary {
+      position: sticky;
+      top: 0;
+      background: rgba(52, 58, 64, 0.9);
+      color: white;
+      padding: 10px 20px;
+      z-index: 1000;
+      backdrop-filter: blur(3px);
+    }
+    .list-group-item {
+      background-color: rgba(255, 255, 255, 0.95);
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cart-summary d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Cart Summary</h5>
+    <div>
+      Items in Cart: <strong id="cartCount">0</strong> |
+      Total Price: ₹<strong id="cartTotal">0</strong>
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <h3 class="mb-4 text-white">Customer Menu</h3>
+    <div id="menuList" class="row"></div>
+
+    <hr class="my-5 border-light" />
+    <h4 class="text-white">Cart Details</h4>
+    <ul id="cartItems" class="list-group"></ul>
+  </div>
+
+  <script>
+    const menuItems = [
+      { id: 1, name: "Burger", price: 120 },
+      { id: 2, name: "Pizza", price: 250 },
+      { id: 3, name: "Pasta", price: 180 },
+      { id: 4, name: "Dosa", price: 90 },
+      { id: 5, name: "Veg Thali", price: 150 }
+    ];
+
+    let cart = [];
+
+    function loadMenu() {
+      const container = document.getElementById("menuList");
+      container.innerHTML = "";
+
+      menuItems.forEach(item => {
+        const col = document.createElement("div");
+        col.className = "col-md-4";
+
+        const card = document.createElement("div");
+        card.className = "menu-card";
+
+        card.innerHTML = `
+          <h5>${item.name}</h5>
+          <p><strong>Price:</strong> ₹${item.price}</p>
+          <button class="btn btn-sm btn-success" onclick="addToCart(${item.id})">Add to Cart</button>
+        `;
+
+        col.appendChild(card);
+        container.appendChild(col);
+      });
+    }
+
+    function addToCart(itemId) {
+      const existing = cart.find(i => i.id === itemId);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        const item = menuItems.find(i => i.id === itemId);
+        cart.push({ ...item, quantity: 1 });
+      }
+      updateCartSummary();
+    }
+
+    function updateCartSummary() {
+      const cartCount = document.getElementById("cartCount");
+      const cartTotal = document.getElementById("cartTotal");
+      const cartItems = document.getElementById("cartItems");
+
+      let totalItems = 0;
+      let totalPrice = 0;
+      cartItems.innerHTML = "";
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = `<li class="list-group-item">Cart is empty.</li>`;
+      } else {
+        cart.forEach(item => {
+          totalItems += item.quantity;
+          totalPrice += item.price * item.quantity;
+
+          const li = document.createElement("li");
+          li.className = "list-group-item d-flex justify-content-between align-items-center";
+          li.innerHTML = `
+            ${item.name} - ₹${item.price} x ${item.quantity}
+            <button class="btn btn-sm btn-danger" onclick="removeFromCart(${item.id})">Remove</button>
+          `;
+          cartItems.appendChild(li);
+        });
+      }
+
+      cartCount.textContent = totalItems;
+      cartTotal.textContent = totalPrice;
+    }
+
+    function removeFromCart(itemId) {
+      cart = cart.filter(item => item.id !== itemId);
+      updateCartSummary();
+    }
+
+    loadMenu();
+    updateCartSummary();
+  </script>
+
+</body>
+</html>

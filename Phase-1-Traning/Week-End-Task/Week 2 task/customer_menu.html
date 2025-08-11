@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Customer Menu - Yummy Tummy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: url('https://t3.ftcdn.net/jpg/10/40/41/20/240_F_1040412050_g4CvlQYasDkTyaAA4yuj2r8Sgpnjt3fN.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            color: #ffffffa9;
+        }
+        .menu-card {
+            background-color: rgba(255, 255, 255, 0.137);
+            color: #000;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .cart-summary {
+            position: sticky;
+            top: 0;
+            background: rgba(52, 58, 64, 0.9);
+            color: rgb(203, 231, 165);
+            padding: 10px 20px;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .list-group-item {
+            background-color: rgba(255, 255, 255, 0.192);
+            color: #000;
+        }
+        .hidden {
+            display: none;
+        }
+        #pay {
+            background-color: rgba(245, 245, 220, 0.596);
+        }
+        #payment {
+            background-color: rgba(250, 235, 215, 0.644);
+        }
+        .nav-link-custom {
+            color: rgb(203, 231, 165);
+            margin-left: 15px;
+            text-decoration: none;
+        }
+        .nav-link-custom:hover {
+            color: #ffffff;
+        }
+       
+        .order-trace-card {
+            background-color: rgba(255, 255, 255, 0.137);
+            color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .order-trace-card .form-control {
+            background-color: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #fff;
+        }
+        .order-trace-card .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .order-trace-card .form-label {
+            color: #fff;
+        }
+        .order-trace-card .list-group-item {
+            background-color: rgba(255, 255, 255, 0.192);
+            color: #000;
+        }
+        .all-orders-list .card {
+            background-color: rgba(255, 255, 255, 0.1); 
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .all-orders-list .card h6 {
+            color: #fff;
+        }
+        .all-orders-list .card p, .all-orders-list .card ul {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .all-orders-list .card .list-group-item {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cart-summary d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Cart Summary</h5>
+        <div>
+            Items in Cart: <strong id="cartCount">0</strong> |
+            Total Price: ₹<strong id="cartTotal">0</strong>
+            <a href="#" class="nav-link-custom" onclick="showSection('menuSection');">Menu</a>
+            <a href="#" class="nav-link-custom" onclick="showSection('traceOrderSection');">Trace Order</a>
+        </div>
+    </div>
+
+    <div class="container mt-4" id="menuSection">
+        <h3 class="mb-4 text-white">Customer Menu</h3>
+        <div id="menuList" class="row"></div>
+
+        <hr class="my-5 border-light" />
+        <h4 class="text-white">Cart Details</h4>
+        <ul id="cartItems" class="list-group mb-3"></ul>
+        <button class="btn btn-primary" onclick="goToPayment()" id="placeOrderBtn">Place Order</button>
+    </div>
+
+    <span id="pay">
+        <div class="container mt-5 hidden" id="paymentSection">
+            <h3 class="text-white">Payment Page</h3>
+            <div class="bg-light text-dark p-4 rounded" id="payment">
+                <p>Total Amount: ₹<strong id="paymentAmount">0</strong></p>
+                <form onsubmit="makePayment(event)">
+                    <div class="mb-3">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">CVV</label>
+                        <input type="password" class="form-control" required />
+                    </div>
+                    <button type="submit" class="btn btn-success">Pay Now</button>
+                </form>
+            </div>
+        </div>
+    </span>
+
+    <div class="container mt-5 hidden" id="successSection">
+        <div class="bg-success text-white p-4 rounded">
+            <h4>Payment Successful!</h4>
+            <p>Your order has been placed successfully. Thank you for choosing Yummy Tummy!</p>
+            <p class="mt-3">Your **Order ID** is: <strong id="orderIdDisplay"></strong></p>
+            <p class="mt-3">You can use this ID to trace your order. <a href="#" class="nav-link-custom text-white" onclick="showSection('traceOrderSection');">Trace your order now!</a></p>
+            <hr class="my-3 border-light">
+            <h5>Order Details:</h5>
+            <ul id="orderDetails" class="list-group"></ul>
+            <p class="mt-3"><strong>Total Paid: ₹<span id="finalPaymentAmount">0</span></strong></p>
+        </div>
+    </div>
+
+    <div class="container mt-5 hidden" id="traceOrderSection">
+        <h3 class="text-white mb-4">Trace Your Order(s)</h3>
+        <div class="order-trace-card">
+            <form onsubmit="traceOrderById(event)" class="mb-3">
+                <div class="mb-3">
+                    <label for="orderIdInput" class="form-label">Enter Specific Order ID</label>
+                    <input type="text" class="form-control" id="orderIdInput" placeholder="e.g., ORD-12345">
+                </div>
+                <button type="submit" class="btn btn-info me-2">Track By ID</button>
+                <button type="button" class="btn btn-secondary" onclick="viewAllOrders()">View All Orders</button>
+            </form>
+            <hr class="my-4 border-light">
+            <div id="tracedOrderDetails">
+                <p class="text-white-50">Enter an Order ID to see its status and details, or click "View All Orders".</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuItems = [
+            { id: 1, name: "Burger", price: 120, img: "data:image/jpeg;base64,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ZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Yyf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+n9Ywf42cnN9W/p/WN/jZyY31b+p9d+8b/ALa/1f3b/wB/779cZ/n/AK+v+j+8f/oP/9k=" }
+        ];
+
+        let cart = [];
+        let orders = JSON.parse(sessionStorage.getItem('yummyTummyOrders')) || {};
+
+        function showSection(sectionId) {
+            document.getElementById("menuSection").classList.add("hidden");
+            document.getElementById("paymentSection").classList.add("hidden");
+            document.getElementById("successSection").classList.add("hidden");
+            document.getElementById("traceOrderSection").classList.add("hidden");
+
+            document.getElementById(sectionId).classList.remove("hidden");
+            
+            if (sectionId === 'traceOrderSection') {
+                document.getElementById('tracedOrderDetails').innerHTML = `<p class="text-white-50">Enter an Order ID to see its status and details, or click "View All Orders".</p>`;
+                document.getElementById('orderIdInput').value = '';
+            }
+        }
+
+        function loadMenu() {
+            const container = document.getElementById("menuList");
+            container.innerHTML = "";
+
+            menuItems.forEach(item => {
+                const col = document.createElement("div");
+                col.className = "col-md-4";
+
+                const card = document.createElement("div");
+                card.className = "menu-card";
+
+                card.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}" class="img-fluid rounded mb-2" />
+                    <h5>${item.name}</h5>
+                    <p><strong>Price:</strong> ₹${item.price}</p>
+                    <button class="btn btn-sm btn-success" onclick="addToCart(${item.id})">Add to Cart</button>
+                `;
+
+                col.appendChild(card);
+                container.appendChild(col);
+            });
+        }
+
+        function addToCart(itemId) {
+            const existing = cart.find(i => i.id === itemId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                const item = menuItems.find(i => i.id === itemId);
+                cart.push({ ...item, quantity: 1 });
+            }
+            updateCartSummary();
+        }
+
+        function updateCartSummary() {
+            const cartCount = document.getElementById("cartCount");
+            const cartTotal = document.getElementById("cartTotal");
+            const cartItems = document.getElementById("cartItems");
+
+            let totalItems = 0;
+            let totalPrice = 0;
+            cartItems.innerHTML = "";
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `<li class="list-group-item">Cart is empty.</li>`;
+                document.getElementById("placeOrderBtn").style.display = "none";
+            } else {
+                document.getElementById("placeOrderBtn").style.display = "block";
+                cart.forEach(item => {
+                    totalItems += item.quantity;
+                    totalPrice += item.price * item.quantity;
+
+                    const li = document.createElement("li");
+                    li.className = "list-group-item d-flex justify-content-between align-items-center";
+                    li.innerHTML = `
+                        ${item.name} - ₹${item.price} x ${item.quantity}
+                        <button class="btn btn-sm btn-danger" onclick="removeFromCart(${item.id})">Remove</button>
+                    `;
+                    cartItems.appendChild(li);
+                });
+            }
+
+            cartCount.textContent = totalItems;
+            cartTotal.textContent = totalPrice;
+        }
+
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            updateCartSummary();
+        }
+
+        function goToPayment() {
+            if (cart.length === 0) {
+                alert("Your cart is empty. Please add items before proceeding to payment.");
+                return;
+            }
+            showSection("paymentSection");
+
+            let total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            document.getElementById("paymentAmount").textContent = total;
+        }
+
+        function generateOrderId() {
+            const timestamp = new Date().getTime();
+            const random = Math.floor(Math.random() * 10000);
+            return `ORD-${timestamp}-${random}`;
+        }
+
+        function makePayment(event) {
+            event.preventDefault();
+            const orderId = generateOrderId();
+            showSection("successSection");
+
+            const orderDetailsList = document.getElementById("orderDetails");
+            orderDetailsList.innerHTML = "";
+            let finalTotal = 0;
+            const currentOrderItems = [];
+
+            cart.forEach(item => {
+                const li = document.createElement("li");
+                li.className = "list-group-item d-flex justify-content-between align-items-center text-dark";
+                const itemTotal = item.price * item.quantity;
+                li.textContent = `${item.name} x ${item.quantity} - ₹${itemTotal}`;
+                orderDetailsList.appendChild(li);
+                finalTotal += itemTotal;
+                currentOrderItems.push({ name: item.name, quantity: item.quantity, price: item.price, itemTotal: itemTotal });
+            });
+
+            document.getElementById("finalPaymentAmount").textContent = finalTotal;
+            document.getElementById("orderIdDisplay").textContent = orderId;
+
+            orders[orderId] = {
+                id: orderId,
+                items: currentOrderItems,
+                total: finalTotal,
+                status: "Order Placed",
+                timestamp: new Date().toLocaleString()
+            };
+            sessionStorage.setItem('yummyTummyOrders', JSON.stringify(orders));
+
+            cart = [];
+            updateCartSummary();
+        }
+
+        function displayOrderDetails(order) {
+            let orderItemsHtml = order.items.map(item => `
+                <li class="list-group-item">
+                    ${item.name} x ${item.quantity} - ₹${item.itemTotal}
+                </li>
+            `).join('');
+
+            return `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">Order ID: ${order.id}</h6>
+                        <p class="card-text"><strong>Status:</strong> <span class="badge bg-primary">${order.status}</span></p>
+                        <p class="card-text"><strong>Order Date:</strong> ${order.timestamp}</p>
+                        <h6 class="card-subtitle mt-3 mb-2 text-white">Items:</h6>
+                        <ul class="list-group list-group-flush">
+                            ${orderItemsHtml}
+                        </ul>
+                        <p class="card-text mt-3"><strong>Total:</strong> ₹${order.total}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function traceOrderById(event) {
+            event.preventDefault();
+            const orderId = document.getElementById("orderIdInput").value.trim();
+            const tracedOrderDetailsDiv = document.getElementById("tracedOrderDetails");
+            tracedOrderDetailsDiv.innerHTML = "";
+
+            if (orderId) {
+                const order = orders[orderId];
+                if (order) {
+                    tracedOrderDetailsDiv.innerHTML = displayOrderDetails(order);
+                } else {
+                    tracedOrderDetailsDiv.innerHTML = `<p class="text-danger">Order ID "${orderId}" not found.</p>`;
+                }
+            } else {
+                tracedOrderDetailsDiv.innerHTML = `<p class="text-white-50">Please enter an Order ID or click "View All Orders".</p>`;
+            }
+        }
+
+        function viewAllOrders() {
+            const tracedOrderDetailsDiv = document.getElementById("tracedOrderDetails");
+            tracedOrderDetailsDiv.innerHTML = "";
+            document.getElementById('orderIdInput').value = ''; 
+
+            const allOrderIds = Object.keys(orders);
+
+            if (allOrderIds.length > 0) {
+                let allOrdersHtml = '<h5 class="text-white mb-3">All Your Placed Orders:</h5>';
+                allOrdersHtml += '<div class="all-orders-list">'; 
+                
+                allOrderIds.sort((a, b) => new Date(orders[b].timestamp) - new Date(orders[a].timestamp));
+
+                allOrderIds.forEach(orderId => {
+                    allOrdersHtml += displayOrderDetails(orders[orderId]);
+                });
+                allOrdersHtml += '</div>';
+                tracedOrderDetailsDiv.innerHTML = allOrdersHtml;
+            } else {
+                tracedOrderDetailsDiv.innerHTML = `<p class="text-white-50">You haven't placed any orders yet.</p>`;
+            }
+        }
+
+        loadMenu();
+        updateCartSummary();
+        showSection('menuSection');
+    </script>
+
+</body>
+</html>
