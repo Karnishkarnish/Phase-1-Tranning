@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Create / Edit";
+}
+@model Project.Models.Expence
+
+<d<div class="text-center">
+    <h1 class="display-4">Create or Edit an Expence</h1>
+</div>
+
+<form asp-action="CreateExpencesEditForm" asp-controller="Home" class="form-container">
+    <div class="mb-3">
+        <label class="form-label" for="value">Value $</label>
+        <input id="value" class="form-control" type="number" placeholder="0" asp-for="Value" step="0.01" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="description">Description</label>
+        <input id="description" class="form-control" type="text" placeholder="Add a Description" asp-for="Des" />
+    </div>
+
+    <button class="btn btn-primary btn-block mt-4" type="submit">Ok</button>
+</form>
+
+<!-- Custom Styles -->
+<style>
+/* Form container styling */
+.form-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    /* Form input field styling */
+    .form-container .form-control {
+        border-radius: 4px;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    /* Form label styling */
+    .form-container .form-label {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Button styling */
+    .form-container .btn-primary {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        background-color: #5bc0de; /* Light blue */
+        border-color: #5bc0de;
+    }
+
+        /* Button hover effect */
+        .form-container .btn-primary:hover {
+            background-color: #39a9c1; /* Darker shade of light blue */
+            border-color: #39a9c1;
+        }
+
+/* Responsive adjustment for smaller screens */
+    .form-container
+
+{
+    padding: 20px;
+    margin-top: 30px;
+}
+
+}
+</style>

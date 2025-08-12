@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Tree Form";
+}
+
+@model MyTree
+
+<style>
+    body {
+        background-color: #f5f9f5;
+        font-family: Arial, sans-serif;
+    }
+
+    form {
+        max-width: 500px;
+        margin: 50px auto;
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+        color: #2e7d32;
+        margin-bottom: 6px;
+        display: inline-block;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 10px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 6px rgba(76, 175, 80, 0.4);
+            outline: none;
+        }
+
+    .btn-primary {
+        background-color: #4caf50;
+        border-color: #4caf50;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 6px;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+            border-color: #45a049;
+            transform: scale(1.02);
+        }
+
+    .text-danger {
+        font-size: 0.9rem;
+        margin-top: 3px;
+        display: block;
+    }
+</style>
+
+
+<form  asp-action="AddTreeResult">
+
+	<div>
+		<label class="mt-4">Name</label>
+		<input class="form-control" type="text" placeholder="Enter tree name" asp-for="Name" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+
+	<div>
+		<label class="mt-4">Description</label>
+		<input class="form-control" type="text" placeholder="Tree description" asp-for="Description" />
+		<span asp-validation-for="Description" class="text-danger"></span>
+	</div>
+	
+	<div>
+		<label class="mt-4">Tree Count</label>
+		<input class="form-control" type="text" placeholder="Enter no of trees" asp-for="TreeCount" />
+		<span asp-validation-for="TreeCount" class="text-danger"></span>
+	</div>
+	
+	<button class="mt-4 btn btn-primary" type="submit">Submit</button>
+</form>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
