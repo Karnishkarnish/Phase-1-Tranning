@@ -7,7 +7,6 @@ import uvicorn
 from pydantic import BaseModel
 from typing import List
 
-# Database config
 SQLALCHEMY_DATABASE_URL = "sqlite:///D:/SQL/SongDB.db"
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
@@ -17,8 +16,6 @@ engine = create_engine(
 
 Base = declarative_base()
 
-
-# Tables
 class User(Base):
     __tablename__ = "Users"
     Id = Column(Integer, primary_key=True, index=True, autoincrement=True)
@@ -34,14 +31,14 @@ class Song(Base):
 
 Base.metadata.create_all(bind=engine)
 
-# DB session
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# FastAPI app
+
 app = FastAPI()
 
 
-# Dependency
+
 def get_db():
     db = SessionLocal()
     try:
@@ -49,8 +46,6 @@ def get_db():
     finally:
         db.close()
 
-
-# Schemas
 class SongCreate(BaseModel):
     Name: str
     Duration: int
@@ -77,7 +72,6 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 
-# API to add user
 @app.post("/add_user", response_model=UserResponse)
 def add_user(user: UserCreate, db: Session = Depends(get_db)):
     existing = db.query(User).filter(User.Name == user.Name).first()
@@ -89,8 +83,6 @@ def add_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(u)
     return u
 
-
-# API to add song
 @app.post("/{username}/add_song", response_model=SongResponse)
 def add_song(username: str, song: SongCreate, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.Name == username).first()
@@ -103,8 +95,6 @@ def add_song(username: str, song: SongCreate, db: Session = Depends(get_db)):
     db.refresh(s)
     return s
 
-
-# API to list songs (valid user required)
 @app.get("/{username}/songs", response_model=List[SongResponse])
 def get_all(username: str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.Name == username).first()
@@ -114,8 +104,6 @@ def get_all(username: str, db: Session = Depends(get_db)):
     recs = db.query(Song).all()
     return recs
 
-
-# API to get song by ID (valid user required)
 @app.get("/{username}/song/{song_id}", response_model=SongResponse)
 def get_by_id(username: str, song_id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.Name == username).first()
