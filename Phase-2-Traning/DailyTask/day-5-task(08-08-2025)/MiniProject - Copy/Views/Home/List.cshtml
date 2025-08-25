@@ -1,0 +1,34 @@
+﻿@model List<MiniProject.Models.Audience>
+
+<h2>Audience List</h2>
+
+<p><strong>Total Audiences:</strong> @ViewBag.Total</p>
+<p><strong>Average Age:</strong> @ViewBag.AverageAge</p>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+             <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@a.Id">@a.Name</a>
+                </td>
+              
+                <td>
+              <a asp-action="Delete" asp-route-id="@a.Id"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Are you sure you want to delete this audience?');">
+                    Delete
+                </a> 
+               </td>
+             </tr>
+        }
+    </tbody>
+</table>

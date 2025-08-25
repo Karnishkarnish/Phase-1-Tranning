@@ -1,0 +1,63 @@
+﻿@model MiniProject.Models.Audience
+
+<h2 class="page-title">Book Tickets for <span>Coolie</span></h2>
+
+<form asp-action="Book" method="post" class="booking-form">
+    <table class="table table-borderless">
+        <tbody>
+            <tr>
+                <th class="w-25 align-middle">
+                    <label asp-for="Name" class="form-label"></label>
+                </th>
+                <td>
+                    <input asp-for="Name" class="form-control" placeholder="Enter Your Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <th class="align-middle">
+                    <label asp-for="Gender" class="form-label"></label>
+                </th>
+                <td>
+                    <select asp-for="Gender" class="form-control">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <th class="align-middle">
+                    <label asp-for="Age" class="form-label"></label>
+                </th>
+                <td>
+                    <input asp-for="Age" class="form-control" placeholder="Enter Your Age" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <th class="aligen-middel">
+                    <label asp-for="Birthday" class="form-label"></label>
+
+                    </th>
+                    <td>
+                    <input asp-for=Birthday type="date" />
+                    <span asp-validation-for="Birthday" class="text-danger"></span>
+              </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="text-center">
+        <button type="submit" class="btn-submit">Submit</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
