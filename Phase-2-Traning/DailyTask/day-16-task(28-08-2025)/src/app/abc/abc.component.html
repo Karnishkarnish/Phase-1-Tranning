@@ -1,0 +1,36 @@
+<button (click)="addMore()">Add Place</button>
+<h3>{{ooty.Name}} is at {{ooty.elevation}} m </h3>
+
+<ul>
+  <li *ngFor="let place of my_fav">
+    {{place.Name}} is at {{place.elevation}}
+  </li>
+</ul>
+
+<h3>Add Movie</h3>
+<form (ngSubmit)="addMovie()" #movieForm="ngForm">
+  <input type="number" [(ngModel)]="newMovie.movieId" name="id" placeholder="Enter ID">
+  <input type="text" [(ngModel)]="newMovie.movieTitle" name="title" placeholder="Enter Title" required>
+  <input type="text" [(ngModel)]="newMovie.movieDirector" name="director" placeholder="Enter Director" required>
+  <input type="number" [(ngModel)]="newMovie.year" name="year" placeholder="Enter Year" required>
+
+  <button type="submit" [disabled]="movieForm.invalid">Add Movie</button>
+</form>
+
+<h3>Movie List</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr>
+    <th>Title</th>
+    <th>Director</th>
+    <th>Year</th>
+    <th>Action</th>
+  </tr>
+  <tr *ngFor="let movie of my_movie">
+    <td>{{ movie.movieTitle }}</td>
+    <td>{{ movie.movieDirector }}</td>
+    <td>{{ movie.year }}</td>
+    <td>
+      <button (click)="deleteMovie(movie.movieId)">Delete</button>
+    </td>
+  </tr>
+</table>
