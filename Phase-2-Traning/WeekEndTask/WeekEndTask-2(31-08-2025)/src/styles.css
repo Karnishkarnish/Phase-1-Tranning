@@ -1,0 +1,16 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f8f9fa;
+}
+
+.app-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(90deg, #3e1a65, #0e2243);
+  padding: 15px;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}

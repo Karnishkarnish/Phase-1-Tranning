@@ -1,0 +1,20 @@
+<div *ngIf="movie">
+  <h2>{{movie.title}} </h2>
+  <p>Directed by: {{movie.director}}</p>
+  <p>Year: {{movie.year}}</p>
+  <img [src]="movie.poster" alt="{{movie.title}}" width="200">
+</div>
+
+<h2> Select Your Seats</h2>
+<div class="seat-grid">
+  <button *ngFor="let seat of seats"
+          (click)="toggleSeat(seat)"
+          [class.selected]="selectedSeats.includes(seat)">
+    {{seat}}
+  </button>
+</div>
+
+<br>
+<button (click)="confirmBooking()" [disabled]="selectedSeats.length === 0">
+  Confirm Booking
+</button>

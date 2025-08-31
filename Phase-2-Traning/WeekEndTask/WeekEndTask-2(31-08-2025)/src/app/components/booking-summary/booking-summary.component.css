@@ -1,0 +1,63 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #ffdddd 0%, #a00000 80%);
+  padding: 40px 0;
+}
+
+h2 {
+  text-align: center;
+  margin: 20px 0;
+  color: #ffcc00; /* gold like movie lights */
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+  font-size: 28px;
+}
+
+h3 {
+  text-align: center;
+  margin-top: 15px;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
+
+p {
+  font-size: 18px;
+  text-align: center;
+  margin: 10px 0;
+  color: #f0f0f0;
+}
+
+button {
+  display: block;
+  margin: 25px auto;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ff0000, #a00000);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  transition: 0.3s;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #cc0000, #800000);
+  transform: scale(1.05);
+}
+.logo {
+  display: block;
+  margin: 0 auto 20px auto;
+  width: 120px;
+}
+
+.poster {
+  display: block;
+  margin: 15px auto;
+  width: 200px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  border: 2px solid #ff4444;
+}
+

@@ -1,0 +1,13 @@
+<h2> Booking Confirmation</h2>
+
+<div *ngIf="movie">
+  <h3>{{movie.title}}</h3>
+  <p>Directed by: {{movie.director}}</p>
+  <p>Year: {{movie.year}}</p>
+</div>
+
+<p>Seats Booked: {{seats.join(', ')}}</p>
+
+<h3>Thank you for booking with Coolie Movie Tickets!</h3>
+
+<button routerLink="/">Back to Home</button>
