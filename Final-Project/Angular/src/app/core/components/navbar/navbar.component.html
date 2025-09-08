@@ -1,0 +1,67 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">OrganicStore</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" routerLink="/shop">Shop</a></li>
+        <li class="nav-item" *ngIf="auth.hasRole(['Store'])"><a class="nav-link" routerLink="/store">Store</a></li>
+        <li class="nav-item" *ngIf="auth.hasRole(['Admin'])"><a class="nav-link" routerLink="/admin">Admin</a></li>
+        <li class="nav-item" *ngIf="auth.hasRole(['Admin','Store'])"><a class="nav-link" routerLink="/reports">Reports</a></li>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item me-3">
+          <a class="btn btn-outline-primary" routerLink="/shop/cart">Cart ({{cart.getItems().length}})</a>
+        </li>
+        <ng-container *ngIf="!auth.isAuthenticated(); else loggedIn">
+          <li class="nav-item"><a class="btn btn-primary" routerLink="/auth/login">Login</a></li>
+        </ng-container>
+        
+        <ng-template #loggedIn>
+          <li class="nav-item me-2"><span class="navbar-text">Hi, {{auth.currentUser?.name}}</span></li>
+          <li class="nav-item"><button class="btn btn-outline-secondary" (click)="logout()" routerLink="/auth/login">Logout</button></li>
+        </ng-template>
+      </ul>
+    </div>
+  </div>
+</nav>
+<style>
+  .navbar {
+  background: linear-gradient(90deg, #2a7a2e, #4caf50);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .navbar-text {
+  color: #fff !important;
+}
+
+.navbar .nav-link:hover {
+  color: #ffe082 !important; /* soft yellow hover */
+}
+
+.navbar .btn-outline-primary {
+  border-color: #fff;
+  color: #fff;
+}
+
+.navbar .btn-outline-primary:hover {
+  background-color: #fff;
+  color: #2a7a2e;
+}
+
+.navbar .btn-primary {
+  background-color: #ffe082;
+  color: #2a7a2e;
+  border: none;
+}
+
+.navbar .btn-primary:hover {
+  background-color: #ffca28;
+}
+
+</style>

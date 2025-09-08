@@ -1,0 +1,1 @@
+export type OrderStatus = 'Placed'|'Accepted'|'Packing'|'Ready'|'OutForDelivery'|'Delivered'|'Cancelled'; export interface OrderItem { productId: number; name: string; price: number; quantity: number; } export interface Order { id: number; customerId: number; storeId: number; status: OrderStatus; items: OrderItem[]; totalAmount: number; createdAt: string; trackingCode?: string; }
